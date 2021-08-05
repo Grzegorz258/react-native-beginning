@@ -1,16 +1,31 @@
 import React, { useState } from 'react';
-import { TextInput, StyleSheet, Text, View, ScrollView, FlatList } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  FlatList,
+  TouchableOpacity,
+  Button
+} from 'react-native';
+
+const initialPeopleData = [
+  { name: 'shaun', id: '1' },
+  { name: 'yoshi', id: '2' },
+  { name: 'mario', id: '3' },
+  { name: 'luigi', id: '4' },
+  { name: 'peach', id: '5' },
+  { name: 'toad', id: '6' },
+  { name: 'bowser', id: '7' },
+];
 
 export default function App() {
-  const [people, setPeople] = useState([
-    { name: 'shaun', id: '1' },
-    { name: 'yoshi', id: '2' },
-    { name: 'mario', id: '3' },
-    { name: 'luigi', id: '4' },
-    { name: 'peach', id: '5' },
-    { name: 'toad', id: '6' },
-    { name: 'bowser', id: '7' },
-  ]);
+  const [people, setPeople] = useState(initialPeopleData);
+
+  const pressHandler = (id) => {
+    console.log(id);
+    setPeople((prevState) => prevState.filter((item) => item.id != id));
+  };
 
   return (
     <View style={styles.container}>
@@ -20,18 +35,18 @@ export default function App() {
           data={people}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <Text style={styles.item}>{item.name}</Text>
+            <TouchableOpacity
+              style={styles.item}
+              onPress={() => pressHandler(item.id)}
+            >
+              <Text style={styles.itemText}>{item.name}</Text>
+            </TouchableOpacity>
           )}
         />
-
-        {/* {for comparison} */}
-        {/* {people.map((item) => (
-          <View key={item.key}>
-            <Text style={styles.item}>{item.name}</Text>
-          </View>
-        ))} */}
-        
       </ScrollView>
+      <View style={styles.button}>
+        <Button title="Reset list" onPress={() => setPeople(initialPeopleData)} />
+      </View>
     </View>
   );
 }
@@ -41,9 +56,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingTop: 50,
     paddingHorizontal: 20,
-    // flex: 1,
-    // alignItems: 'center',
-    // justifyContent: 'center',
   },
   item: {
     flex: 1,
@@ -53,7 +65,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     padding: 30,
     backgroundColor: 'pink',
+  },
+  itemText: {
     fontSize: 24,
     textAlign: 'center',
   },
+  button: {
+    marginTop: 30
+  }
 });
