@@ -1,7 +1,17 @@
 import React, { useState } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import {
+  FlatList,
+  View,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Alert,
+} from 'react-native';
+import AddTodo from './src/components/AddTodo/AddTodo';
 import Header from './src/components/Header/Header';
 import TodoItem from './src/components/TodoItem/TodoItem';
+import styles from './App.styles';
+
+const { container, content, list } = styles;
 
 export default function App() {
   const [todos, setTodos] = useState([
@@ -11,30 +21,40 @@ export default function App() {
   ]);
 
   const pressTodosHandler = (key) => {
-    setTodos((prevState) => prevState.filter((item) => item.key != key))
-  }
+    setTodos((prevState) => prevState.filter((item) => item.key != key));
+  };
+
+  const submitHandler = (text) => {
+    if (text.length > 3) {
+      // setText('');
+      setTodos((prevTodos) => {
+        return [{ text, key: Math.random().toString() }, ...prevTodos];
+      });
+    } else {
+      Alert.alert('OOPS', 'Todo must be over 3 characters long', [
+        { text: 'Understood'},
+      ]);
+    }
+  };
 
   return (
-    <View style={styles.container}>
-      <Header text="My todos" />
-      <View style={styles.content}>
-        <View style={styles.list}>
-          <FlatList data={todos} renderItem={({ item }) => <TodoItem item={item} pressHandler={pressTodosHandler} />} />
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <View style={container}>
+        <Header text="My todos" />
+        <View style={content}>
+          <AddTodo submitHandler={submitHandler} />
+          <View style={list}>
+            <FlatList
+              data={todos}
+              renderItem={({ item }) => (
+                <TodoItem item={item} pressHandler={pressTodosHandler} />
+              )}
+            />
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  content: {
-    padding: 40,
-  },
-  list: {
-    marginTop: 20,
-  },
-});
+
