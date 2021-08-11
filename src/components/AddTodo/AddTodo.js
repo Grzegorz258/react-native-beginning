@@ -21,7 +21,7 @@ const AddTodo = ({ submitHandler }) => {
       />
       <Button
         color="coral"
-        onPress={() => submitHandler(text)}
+        onPress={() => submitHandler(text, setText)}
         title="Add task"
       />
     </View>

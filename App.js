@@ -24,9 +24,9 @@ export default function App() {
     setTodos((prevState) => prevState.filter((item) => item.key != key));
   };
 
-  const submitHandler = (text) => {
+  const submitHandler = (text, setText) => {
     if (text.length > 3) {
-      // setText('');
+      setText('');
       setTodos((prevTodos) => {
         return [{ text, key: Math.random().toString() }, ...prevTodos];
       });
