@@ -1,14 +1,18 @@
 import React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import styles from './TodoItem.styles';
+import { MaterialIcons } from '@expo/vector-icons';
 
-const { container } = styles;
+const { container, todoText, deleteIcon } = styles;
 
-const TodoItem = ({ item: {text, key}, pressHandler }) => {
+const TodoItem = ({ item: { text, key }, pressHandler }) => {
   return (
-    <TouchableOpacity style={container} onPress={() => pressHandler(key)}>
-      <Text>{text}</Text>
-    </TouchableOpacity>
+    <View style={container}>
+      <TouchableOpacity style={deleteIcon} onPress={() => pressHandler(key)}>
+        <MaterialIcons name="delete" size={25} color="#333" />
+      </TouchableOpacity>
+      <Text style={todoText}>{text}</Text>
+    </View>
   );
 };
 
